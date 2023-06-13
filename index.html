@@ -2,24 +2,32 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Página con SVG centrado</title>
+    <title>Calculador de gabo</title>
     <style>
         body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
-        svg {
-            width: 300px;
-            height: 300px;
+        #video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    
         }
     </style>
 </head>
 <body>
+    <video id="video-background"></video>
     <img src="mira.svg" alt="Mira" />
+    <canvas id="canvas" style="display: none;">jdhsl</canvas>
+
+    <script src="script.js"></script>
 </body>
 </html>
