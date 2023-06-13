@@ -1,6 +1,8 @@
 //script.js
 window.addEventListener('DOMContentLoaded', () => {
     const videoElement = document.getElementById('video-background');
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+
 
     // Verificar si el navegador es compatible con getUserMedia
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
