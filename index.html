@@ -39,27 +39,13 @@
 </head>
 <body>
     <video id="video-background" autoplay muted></video>
-jdlshfdlsjnhflksnlfs
+
     <div id="svg-container">
         <img src="mira.svg"></img>
     </div>
 
-    <script>
-        // Obtener el video de la cámara y establecerlo como fondo
-        const videoElement = document.getElementById('video-background');
-
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-                .then((stream) => {
-                    videoElement.srcObject = stream;
-                    videoElement.play();
-                })
-                .catch((error) => {
-                    console.error('Error al acceder a la cámara: ', error);
-                });
-        } else {
-            console.error('getUserMedia no es soportado por el navegador');
-        }
-    </script>
+    
+    
+     <script src="camera.js"></script>
 </body>
 </html>
