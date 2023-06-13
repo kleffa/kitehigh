@@ -89,15 +89,6 @@
         // Variables para controlar el estado de captura de imagen
         var isCapturing = false;
         var previousVisibility;
-        // Función para pausar/reanudar la cámara
-        function toggleCamera() {
-            if (isCameraActive) {
-                videoBackground.pause();
-            } else {
-                videoBackground.play();
-            }
-        }
-
         // Función para capturar imagen
         function captureImage() {
             if (isCapturing) return;
@@ -130,20 +121,30 @@
                 tiltInfo.textContent = 'Vertical: ' + tiltX.toFixed(2) + ', Horizontal: ' + tiltY.toFixed(2) + ', Giro: ' + tiltZ.toFixed(2);
             });
         }
+    // Verificar si el navegador es compatible con la API de mediaDevices
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Obtener el stream de la cámara trasera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(function(stream) {
+                videoBackground.srcObject = stream;
 
-     
-        // Verificar si el navegador es compatible con la API de mediaDevices
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Obtener el stream de la cámara trasera
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-                .then(function(stream) {
-                    videoBackground.srcObject = stream;
-                    captureButton.disabled = false;
-                })
-                .catch(function(error) {
-                    console.log('Error al acceder a la cámara:', error);
+                // Detectar cambios en la visibilidad de la página
+                document.addEventListener('visibilitychange', function() {
+                    if (document.visibilityState === 'visible') {
+                        // La página ha recuperado el foco, reanudar la cámara
+                          videoBackground.play();
+                    } else {
+                        // La página ha perdido el foco, pausar la cámara
+                          videoBackground.pause();
+                    }
                 });
+            })
+            .catch(function(error) {
+                console.log('Error al acceder a la cámara:', error);
+            });
         }
+              
+
 
         // Agregar evento click al botón de capturar imagen
         captureButton.addEventListener('click', captureImage);
