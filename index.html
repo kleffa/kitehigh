@@ -38,8 +38,8 @@
             z-index: 1;
         }
         #sensor-info {
-            margin-bottom: 20px;
-            position: relativee;
+            bottom: 20px;
+            position: relative;
         }
         #info-box {
             
@@ -122,12 +122,12 @@
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function(event) {
                 // Obtener los ángulos de inclinación
-                var tiltX = event.beta -90; // levantando el telefono, 90 al horizonte  (rango: -180 a 180)
-                var tiltY = event.gamma ; // Inclinación lateral (rango: -90 a 90)
+                var tiltX = event.beta -90; // elevancion con telefono en vertical  (rango normal: -180 a 180)
+                var tiltY = event.gamma ; // elevacion con telefono en horizontal   (rango normal: -90 a 90)
                 var tiltZ = event.alpha; // Giro (rango: 0 a 360)
 
                 // Actualizar el texto con la información de los sensores de inclinación
-                tiltInfo.textContent = 'Inclinación X: ' + tiltX.toFixed(2) + ', Inclinación Y: ' + tiltY.toFixed(2) + ', Inclinación Z: ' + tiltZ.toFixed(2);
+                tiltInfo.textContent = 'Vertical: ' + tiltX.toFixed(2) + ', Horizontal: ' + tiltY.toFixed(2) + ', Giro: ' + tiltZ.toFixed(2);
             });
         }
 
