@@ -139,10 +139,10 @@
                 document.addEventListener('visibilitychange', function() {
                     if (document.visibilityState === 'visible') {
                         // La página ha recuperado el foco, reanudar la cámara
-                        toggleCamera();
+                        resumeCamera();
                     } else {
                         // La página ha perdido el foco, pausar la cámara
-                        toggleCamera();
+                        pauseCamera();
                     }
                 });
             })
