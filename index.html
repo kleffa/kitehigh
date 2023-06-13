@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página web con video de fondo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+        }
+        #video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        #video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+        }
+        #content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+        #sensor-info {
+            margin-top: 20px;
+            position: relative;
+        }
+        #info-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: inline-block;
+        }
+        #capture-button {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #capture-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video-background" autoplay muted loop></video>
+    </div>
+    <div id="content">
+        <object id="mira-svg" type="image/svg+xml" data="mira.svg"></object>
+        <div id="sensor-info">
+            <div id="info-box">
+                <p id="LoremIpsum">Lorem Ipsum</p>
+                <p id="tilt-info"></p>
+            </div>
+            <button id="capture-button" disabled>Capturar imagen</button>
+        </div>
+    </div>
+
+    <script>
+        // Obtener referencia a los elementos HTML
+        var videoBackground = document.getElementById('video-background');
+        var tiltInfo = document.getElementById('tilt-info');
+        var miraSvg = document.getElementById('mira-svg');
+        var captureButton = document.getElementById('capture-button');
+
+        // Variables para controlar el estado de captura de imagen
+        var isCapturing = false;
+        var previousVisibility;
+
+        // Función para capturar imagen
+        function captureImage() {
+            if (isCapturing) return;
+            isCapturing = true;
+
+            // Guardar el estado actual de visibilidad de la imagen SVG y ocultarla temporalmente
+            previousVisibility = miraSvg.style.visibility;
+            miraSvg.style.visibility = 'hidden';
+
+            // Lógica para capturar imagen
+            // Aquí puedes usar librerías como html2canvas o Canvas API para capturar una imagen del contenido
+
+            // Simulación de tiempo de captura (3 segundos)
+            setTimeout(function() {
+                // Restaurar la visibilidad de la imagen SVG y restablecer el estado de captura
+                miraSvg.style.visibility = previousVisibility;
+                isCapturing = false;
+            }, 3000);
+        }
+
+        // Obtener los datos de inclinación del dispositivo
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                // Obtener los ángulos de inclinación
+                var tiltX = event.beta; // Inclinación hacia adelante y hacia atrás (rango: -180 a 180)
+                var tiltY = event.gamma; // Inclinación lateral (rango: -90 a 90)
+                var tiltZ = event.alpha; // Giro (rango: 0 a 360)
+
+                // Actualizar el texto con la información de los sensores de inclinación
+                tiltInfo.textContent = 'Inclinación X: ' + tiltX.toFixed(2) + ', Inclinación Y: ' + tiltY.toFixed(2) + ', Inclinación Z: ' + tiltZ.toFixed(2);
+            });
+        }
+
+        // Verificar si el navegador es compatible con la API de mediaDevices
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Obtener el stream de la cámara trasera
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then(function(stream) {
+                    videoBackground.srcObject = stream;
+                    captureButton.disabled = false;
+                })
+                .catch(function(error) {
+                    console.log('Error al acceder a la cámara:', error);
+                });
+        }
+
+        // Agregar evento click al botón de capturar imagen
+        captureButton.addEventListener('click', captureImage);
+    </script>
+</body>
+</html>
