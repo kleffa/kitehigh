@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página web con video de fondo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+        }
+        #video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        #video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+        }
+        #content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+        #sensor-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video-background" autoplay muted loop></video>
+    </div>
+    <div id="content">
+        <object id="mira-svg" type="image/svg+xml" data="mira.svg"></object>
+        <div id="sensor-info">
+            <p id="LoremIpsum">Lorem Ipsum</p>
+            <p id="tilt-info"></p>
+        </div>
+    </div>
+
+    <script>
+        // Obtener referencia a los elementos HTML
+        var videoBackground = document.getElementById('video-background');
+        var tiltInfo = document.getElementById('tilt-info');
+
+        // Obtener los datos de inclinación del dispositivo
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                // Obtener los ángulos de inclinación
+                var tiltX = event.beta; // Inclinación hacia adelante y hacia atrás (rango: -180 a 180)
+                var tiltY = event.gamma; // Inclinación lateral (rango: -90 a 90)
+                var tiltZ = event.alpha; // Giro (rango: 0 a 360)
+
+                // Actualizar el texto con la información de los sensores de inclinación
+                tiltInfo.textContent = 'Inclinación X: ' + tiltX.toFixed(2) + ', Inclinación Y: ' + tiltY.toFixed(2) + ', Inclinación Z: ' + tiltZ.toFixed(2);
+            });
+        }
+
+        // Verificar si el navegador es compatible con la API de mediaDevices
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Obtener el stream de la cámara trasera
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then(function(stream) {
+                    videoBackground.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.log('Error al acceder a la cámara:', error);
+                });
+        }
+    </script>
+</body>
+</html>
