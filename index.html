@@ -122,7 +122,7 @@
             });
         }
     // Verificar si el navegador es compatible con la API de mediaDevices
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Obtener el stream de la cámara trasera
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(function(stream) {
@@ -130,20 +130,34 @@
 
                 // Detectar cambios en la visibilidad de la página
                 document.addEventListener('visibilitychange', function() {
-                    if (document.visibilityState === 'visible') {
+                    if (document.visibilityState === 'visible' && !isCameraActive) {
                         // La página ha recuperado el foco, reanudar la cámara
-                          videoBackground.play();
-                    } else {
+                        resumeCamera();
+                    } else if (document.visibilityState === 'hidden' && isCameraActive) {
                         // La página ha perdido el foco, pausar la cámara
-                          videoBackground.pause();
+                        pauseCamera();
+                    }
+                });
+
+                // Detectar cuando la ventana pierde el foco
+                window.addEventListener('blur', function() {
+                    if (isCameraActive) {
+                        // La ventana ha perdido el foco, pausar la cámara
+                        pauseCamera();
+                    }
+                });
+
+                // Detectar cuando la ventana recupera el foco
+                window.addEventListener('focus', function() {
+                    if (!isCameraActive && document.visibilityState === 'visible') {
+                        // La ventana ha recuperado el foco, reanudar la cámara
+                        resumeCamera();
                     }
                 });
             })
             .catch(function(error) {
                 console.log('Error al acceder a la cámara:', error);
             });
-        }
-              
 
 
         // Agregar evento click al botón de capturar imagen
