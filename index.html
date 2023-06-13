@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Página web con video de fondo</title>
+    <title>Calculadora de cometas</title>
     <style>
         body {
             margin: 0;
@@ -38,8 +38,8 @@
             z-index: 1;
         }
         #sensor-info {
-            margin-top: 20px;
-            position: absolute;
+            margin-bottom: 20px;
+            position: relativee;
         }
         #info-box {
             
@@ -89,6 +89,14 @@
         // Variables para controlar el estado de captura de imagen
         var isCapturing = false;
         var previousVisibility;
+        // Función para pausar/reanudar la cámara
+        function toggleCamera() {
+            if (isCameraActive) {
+                videoBackground.pause();
+            } else {
+                videoBackground.play();
+            }
+        }
 
         // Función para capturar imagen
         function captureImage() {
@@ -114,8 +122,8 @@
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function(event) {
                 // Obtener los ángulos de inclinación
-                var tiltX = event.beta; // Inclinación hacia adelante y hacia atrás (rango: -180 a 180)
-                var tiltY = event.gamma; // Inclinación lateral (rango: -90 a 90)
+                var tiltX = event.beta -90; // levantando el telefono, 90 al horizonte  (rango: -180 a 180)
+                var tiltY = event.gamma ; // Inclinación lateral (rango: -90 a 90)
                 var tiltZ = event.alpha; // Giro (rango: 0 a 360)
 
                 // Actualizar el texto con la información de los sensores de inclinación
@@ -123,6 +131,7 @@
             });
         }
 
+     
         // Verificar si el navegador es compatible con la API de mediaDevices
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Obtener el stream de la cámara trasera
