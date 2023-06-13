@@ -2,32 +2,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Calculador de gabo</title>
+    <title>Página con imagen SVG centrada y fondo de cámara</title>
     <style>
         body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
             padding: 0;
             overflow: hidden;
+            background: rgba(0, 0, 0, 0); /* Fondo transparente */
         }
 
         #video-background {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            z-index: -1;
         }
 
-    
+        #svg-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #svg-container svg {
+            width: 300px;
+            height: 300px;
         }
     </style>
 </head>
 <body>
-    <video id="video-background"></video>
-    <!img src="mira.svg" alt="Mira" />
-    <canvas id="canvas" style="display: none;">jdhsl</canvas>
+    <video id="video-background" autoplay muted></video>
 
-    <script src="script.js"></script>
+    <div id="svg-container">
+        <img src="mira.svg"></img>
+    </div>
+
+    <script>
+        // Obtener el video de la cámara y establecerlo como fondo
+        const videoElement = document.getElementById('video-background');
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then((stream) => {
+                    videoElement.srcObject = stream;
+                    videoElement.play();
+                })
+                .catch((error) => {
+                    console.error('Error al acceder a la cámara: ', error);
+                });
+        } else {
+            console.error('getUserMedia no es soportado por el navegador');
+        }
+    </script>
 </body>
 </html>
