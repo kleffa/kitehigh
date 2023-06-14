@@ -113,15 +113,17 @@
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function(event) {
                 // Obtener los ángulos de inclinación
-                var tiltX = event.beta -90; // elevancion con telefono en vertical  (rango normal: -180 a 180)
-                var tiltY = event.gamma ; // elevacion con telefono en horizontal   (rango normal: -90 a 90)
+                var tiltX = event.beta -90;  // elevancion con telefono en vertical  (rango normal: -180 a 180)
+                var tiltY = event.gamma -90; // elevacion con telefono en horizontal   (rango normal: -90 a 90)
                 var tiltZ = event.alpha; // Giro (rango: 0 a 360)
+                //aqui podria ir una variable tipo comparar tiltX y TiltY para indicar la mira en un color para tenerlo bien centrado 
+                //o alguna operacion para mantener el telefono estabilizado o corregie el angulo, un horizonte artificial 
 
                 // Actualizar el texto con la información de los sensores de inclinación
                 tiltInfo.textContent = 'Vertical: ' + tiltX.toFixed(2) + ', Horizontal: ' + tiltY.toFixed(2) + ', Giro: ' + tiltZ.toFixed(2);
             });
         }
-
+/*
             // Verificar si el navegador es compatible con la API de mediaDevices
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Obtener el stream de la cámara trasera
@@ -134,9 +136,14 @@
                     console.log('Error al acceder a la cámara:', error);
                 });
         }
-
+*/
         // Agregar evento click al botón de capturar imagen
         captureButton.addEventListener('click', captureImage);
+        
+             
     </script>
+    
+    <script src="camera.js"></script>
+    
 </body>
 </html>
