@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #slider {
+  width: 200px;
+  height: 20px;
+  background-color: #ccc;
+  position: relative;
+  cursor: grab;
+}
+
+#slider:before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: #f00;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: grabbing;
+}
+    
+      </style>
+</head>
+<body>
+
+  <div id="slider"></div>
+
+    
+</body>
+  <script>
+    let variable = 0;
+
+function updateVariable(distance, time) {
+  // Cálculos personalizados para la variación de la variable
+  // Puedes ajustar esto según tus necesidades
+  const scaleFactor = 0.01;
+  const logBase = 2;
+  
+  const variation = scaleFactor * Math.log(distance + 1) * time;
+  variable += variation;
+  
+  console.log("Nueva variable:", variable);
+}
+
+let isDragging = false;
+let dragStartY = 0;
+
+const slider = document.getElementById("slider");
+
+slider.addEventListener("mousedown", startDrag);
+slider.addEventListener("mouseup", stopDrag);
+slider.addEventListener("mouseleave", stopDrag);
+slider.addEventListener("mousemove", drag);
+
+slider.addEventListener("touchstart", startDrag);
+slider.addEventListener("touchend", stopDrag);
+slider.addEventListener("touchcancel", stopDrag);
+slider.addEventListener("touchmove", drag);
+
+function startDrag(e) {
+  isDragging = true;
+  dragStartY = e.clientY || e.touches[0].clientY;
+}
+
+function stopDrag() {
+  isDragging = false;
+}
+
+function drag(e) {
+  if (isDragging) {
+    const currentY = e.clientY || e.touches[0].clientY;
+    const distance = Math.abs(currentY - dragStartY);
+    const time = performance.now() / 1000; // Obtén el tiempo actual en segundos
+    
+    updateVariable(distance, time);
+    
+    dragStartY = currentY;
+  }
+}
+
+  </script>
+</html>
