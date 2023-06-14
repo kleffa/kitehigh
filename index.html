@@ -32,12 +32,10 @@
             width: auto;
             height: auto;
         }
-        #content {
-            text-align: center;
-            color: white;
-            z-index: 1;
-        }
+       
         #contenido {
+                 color: white;
+                 z-index: 1;
                  position: fixed;
                  bottom: 20px;
                  width: 100%;
@@ -70,16 +68,19 @@
     <div id="video-container">
         <video id="video-background" autoplay muted loop></video>
     </div>
-    <div id="">
+    
+    <div id="mira">
         <object id="mira-svg" type="image/svg+xml" data="mira.svg"></object>
-   </div>     
-        <div id="contenido">
-            <div id="info-box">
+    </div> 
+    
+    <div id="contenido">
+        <div id="info-box">
                 <p id="LoremIpsum">Lorem Ipsum</p>
                 <p id="tilt-info"></p>
-            </div>
-            <button id="capture-button" disabled>Capturar imagen</button>
         </div>
+        
+        <button id="capture-button" disabled>Capturar imagen</button>
+      
     </div>
 
     <script>
