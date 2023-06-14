@@ -2,84 +2,96 @@
 <html>
 <head>
   <style>
-    #slider {
-  width: 200px;
-  height: 20px;
-  background-color: #ccc;
-  position: relative;
-  cursor: grab;
-}
+    #slider-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-#slider:before {
-  content: "";
-  width: 20px;
-  height: 20px;
-  background-color: #f00;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: grabbing;
-}
-    
-      </style>
+    #slider {
+      width: 200px;
+      height: 20px;
+      background-color: #ccc;
+      position: relative;
+      cursor: grab;
+    }
+
+    #slider:before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background-color: #f00;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: grabbing;
+    }
+
+    #variable-value {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
+  <div id="slider-container">
+    <div id="slider"></div>
+  </div>
+  <div id="variable-value">Variable: <span id="value">0</span></div>
 
-  <div id="slider"></div>
-
-    
-</body>
   <script>
     let variable = 0;
 
-function updateVariable(distance, time) {
-  // Cálculos personalizados para la variación de la variable
-  // Puedes ajustar esto según tus necesidades
-  const scaleFactor = 0.01;
-  const logBase = 2;
-  
-  const variation = scaleFactor * Math.log(distance + 1) * time;
-  variable += variation;
-  
-  console.log("Nueva variable:", variable);
-}
+    function updateVariable(distance, time) {
+      // Cálculos personalizados para la variación de la variable
+      // Puedes ajustar esto según tus necesidades
+      const scaleFactor = 0.01;
+      const logBase = 2;
 
-let isDragging = false;
-let dragStartY = 0;
+      const variation = scaleFactor * Math.log(distance + 1) * time;
+      variable += variation;
 
-const slider = document.getElementById("slider");
+      document.getElementById("value").textContent = variable.toFixed(2);
+    }
 
-slider.addEventListener("mousedown", startDrag);
-slider.addEventListener("mouseup", stopDrag);
-slider.addEventListener("mouseleave", stopDrag);
-slider.addEventListener("mousemove", drag);
+    let isDragging = false;
+    let dragStartY = 0;
 
-slider.addEventListener("touchstart", startDrag);
-slider.addEventListener("touchend", stopDrag);
-slider.addEventListener("touchcancel", stopDrag);
-slider.addEventListener("touchmove", drag);
+    const slider = document.getElementById("slider");
 
-function startDrag(e) {
-  isDragging = true;
-  dragStartY = e.clientY || e.touches[0].clientY;
-}
+    slider.addEventListener("mousedown", startDrag);
+    slider.addEventListener("mouseup", stopDrag);
+    slider.addEventListener("mouseleave", stopDrag);
+    slider.addEventListener("mousemove", drag);
 
-function stopDrag() {
-  isDragging = false;
-}
+    slider.addEventListener("touchstart", startDrag);
+    slider.addEventListener("touchend", stopDrag);
+    slider.addEventListener("touchcancel", stopDrag);
+    slider.addEventListener("touchmove", drag);
 
-function drag(e) {
-  if (isDragging) {
-    const currentY = e.clientY || e.touches[0].clientY;
-    const distance = Math.abs(currentY - dragStartY);
-    const time = performance.now() / 1000; // Obtén el tiempo actual en segundos
-    
-    updateVariable(distance, time);
-    
-    dragStartY = currentY;
-  }
-}
+    function startDrag(e) {
+      isDragging = true;
+      dragStartY = e.clientY || e.touches[0].clientY;
+    }
 
+    function stopDrag() {
+      isDragging = false;
+    }
+
+    function drag(e) {
+      if (isDragging) {
+        const currentY = e.clientY || e.touches[0].clientY;
+        const distance = Math.abs(currentY - dragStartY);
+        const time = performance.now() / 1000; // Obtén el tiempo actual en segundos
+
+        updateVariable(distance, time);
+
+        dragStartY = currentY;
+      }
+    }
   </script>
+</body>
 </html>
