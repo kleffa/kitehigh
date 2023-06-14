@@ -89,7 +89,7 @@
         // Variables para controlar el estado de captura de imagen
         var isCapturing = false;
         var previousVisibility;
-        // Función para capturar imagen
+        // Función para capturar imagen con el boton
         function captureImage() {
             if (isCapturing) return;
             isCapturing = true;
@@ -123,7 +123,7 @@
                 tiltInfo.textContent = 'Vertical: ' + tiltX.toFixed(2) + ', Horizontal: ' + tiltY.toFixed(2) + ', Giro: ' + tiltZ.toFixed(2);
             });
         }
-/*
+
             // Verificar si el navegador es compatible con la API de mediaDevices
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Obtener el stream de la cámara trasera
@@ -136,14 +136,12 @@
                     console.log('Error al acceder a la cámara:', error);
                 });
         }
-*/
+
         // Agregar evento click al botón de capturar imagen
         captureButton.addEventListener('click', captureImage);
         
              
     </script>
-    
-    <script src="camera.js"></script>
-    
+
 </body>
 </html>
