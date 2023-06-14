@@ -37,9 +37,14 @@
             color: white;
             z-index: 1;
         }
-        #sensor-info {
-            margin-bottom: 20px;
-            position: relative;
+        #contenido {
+                 position: fixed;
+                 bottom: 0;
+                 width: 100%;
+                 background-color: #f1f1f1;
+                 padding: 20px;
+                 box-sizing: border-box;
+                 text-align: center;
         }
         #info-box {
             
@@ -70,7 +75,7 @@
     </div>
     <div id="content">
         <object id="mira-svg" type="image/svg+xml" data="mira.svg"></object>
-        <div id="sensor-info">
+        <div id="contenido">
             <div id="info-box">
                 <p id="LoremIpsum">Lorem Ipsum</p>
                 <p id="tilt-info"></p>
