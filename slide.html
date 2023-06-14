@@ -2,11 +2,12 @@
 <html>
 <head>
   <style>
-    #slider-container {
+    body {
+      height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
 
     #slider {
@@ -29,34 +30,27 @@
       cursor: grabbing;
     }
 
-    #variable-value {
-      text-align: center;
-      font-size: 24px;
+    #value {
+      font-size: 48px;
       margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div id="slider-container">
-    <div id="slider"></div>
-  </div>
-  <div id="variable-value">Variable: <span id="value">0</span></div>
+  <div id="slider"></div>
+  <div id="value">0</div>
 
   <script>
-    let variable = 0;
+    let number = 0;
+    let intervalId = null;
 
-    function updateVariable(distance, time) {
-      const scaleFactor = 0.01;
-      const logBase = 2;
-
-      const variation = scaleFactor * Math.log(distance + 1) * time;
-      variable += variation;
-
-      document.getElementById("value").textContent = Math.round(variable);
+    function updateNumber(value) {
+      number += value;
+      document.getElementById("value").textContent = number;
     }
 
     let isDragging = false;
-    let dragStartY = 0;
+    let dragStartX = 0;
 
     const slider = document.getElementById("slider");
 
@@ -72,24 +66,39 @@
 
     function startDrag(e) {
       isDragging = true;
-      dragStartY = e.clientY || e.touches[0].clientY;
+      dragStartX = e.clientX || e.touches[0].clientX;
+      intervalId = setInterval(updateNumberOnHold, 100); // Intervalo de actualización del número (cada 100ms)
     }
 
     function stopDrag() {
       isDragging = false;
+      clearInterval(intervalId);
     }
 
     function drag(e) {
       e.preventDefault();
       if (isDragging) {
-        const containerTop = document.getElementById("slider-container").getBoundingClientRect().top;
-        const currentY = e.clientY || e.touches[0].clientY;
-        const distance = currentY - containerTop;
-        const time = performance.now() / 1000;
+        const currentX = e.clientX || e.touches[0].clientX;
+        const distance = currentX - dragStartX;
+        const sensitivity = 5; // Ajusta la sensibilidad del slider
 
-        updateVariable(distance, time);
+        if (distance > sensitivity) {
+          updateNumber(1); // Suma 1 al número
+          dragStartX = currentX;
+        } else if (distance < -sensitivity) {
+          updateNumber(-1); // Resta 1 al número
+          dragStartX = currentX;
+        }
+      }
+    }
 
-        dragStartY = currentY;
+    function updateNumberOnHold() {
+      const sensitivity = 5; // Ajusta la sensibilidad del slider
+      const increment = Math.round((Math.abs(dragStartX - (isDragging ? (e.clientX || e.touches[0].clientX) : dragStartX))) / sensitivity);
+      const sign = Math.sign(dragStartX - (isDragging ? (e.clientX || e.touches[0].clientX) : dragStartX));
+
+      if (increment > 0) {
+        updateNumber(increment * sign); // Incrementa o decrementa el número según la dirección
       }
     }
   </script>
