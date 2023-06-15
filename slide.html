@@ -10,16 +10,56 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 20px;
     }
 
     #slider {
-      width: 300px;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80%;
+      max-width: 300px;
+      height: 10px;
+      background: #ccc;
+      outline: none;
+      border-radius: 5px;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #4CAF50;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    #slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #4CAF50;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Slider y cuenta</h1>
-  <p>Cuenta: <span id="cuenta">10</span></p>
+  
+  <p>Cuenta: <span id="cuenta">10</span> metros</p>
   <input type="range" id="slider" min="-10" max="10" value="0">
 
   <script>
@@ -41,7 +81,7 @@
 
     setInterval(function() {
       if (isHolding) {
-        cuenta += sliderValue * 2;
+        cuenta += sliderValue^2 / 5;
         cuenta = cuenta <= 0 ? 0 : cuenta;
         cuentaElement.textContent = cuenta;
       }
