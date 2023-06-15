@@ -1,105 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Slider y cuenta</title>
   <style>
-    body {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
     #slider {
-      width: 200px;
-      height: 20px;
-      background-color: #ccc;
-      position: relative;
-      cursor: grab;
-    }
-
-    #slider:before {
-      content: "";
-      width: 20px;
-      height: 20px;
-      background-color: #f00;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      cursor: grabbing;
-    }
-
-    #value {
-      font-size: 48px;
-      margin-top: 20px;
+      width: 300px;
     }
   </style>
 </head>
 <body>
-  <div id="slider"></div>
-  <div id="value">0</div>
-
+  <h1>Slider y cuenta</h1>
+  <p>Cuenta: <span id="cuenta">10</span></p>
+  <input type="range" id="slider" min="-10" max="10" value="0">
+  
   <script>
-    let number = 0;
-    let intervalId = null;
-
-    function updateNumber(value) {
-      number += value;
-      document.getElementById("value").textContent = number;
-    }
-
-    let isDragging = false;
-    let dragStartX = 0;
-
-    const slider = document.getElementById("slider");
-
-    slider.addEventListener("mousedown", startDrag);
-    slider.addEventListener("mouseup", stopDrag);
-    slider.addEventListener("mouseleave", stopDrag);
-    slider.addEventListener("mousemove", drag);
-
-    slider.addEventListener("touchstart", startDrag);
-    slider.addEventListener("touchend", stopDrag);
-    slider.addEventListener("touchcancel", stopDrag);
-    slider.addEventListener("touchmove", drag);
-
-    function startDrag(e) {
-      isDragging = true;
-      dragStartX = e.clientX || e.touches[0].clientX;
-      intervalId = setInterval(updateNumberOnHold, 100); // Intervalo de actualización del número (cada 100ms)
-    }
-
-    function stopDrag() {
-      isDragging = false;
-      clearInterval(intervalId);
-    }
-
-    function drag(e) {
-      e.preventDefault();
-      if (isDragging) {
-        const currentX = e.clientX || e.touches[0].clientX;
-        const distance = currentX - dragStartX;
-        const sensitivity = 5; // Ajusta la sensibilidad del slider
-
-        if (distance > sensitivity) {
-          updateNumber(1); // Suma 1 al número
-          dragStartX = currentX;
-        } else if (distance < -sensitivity) {
-          updateNumber(-1); // Resta 1 al número
-          dragStartX = currentX;
-        }
+    var cuenta = 10;
+    var slider = document.getElementById("slider");
+    var cuentaElement = document.getElementById("cuenta");
+    var sliderValue = 0;
+    var isHolding = false;
+    
+    slider.addEventListener("input", function() {
+      sliderValue = parseInt(slider.value);
+    });
+    
+    slider.addEventListener("mousedown", function() {
+      isHolding = true;
+    });
+    
+    slider.addEventListener("mouseup", function() {
+      isHolding = false;
+      sliderValue = 0;
+      resetSlider();
+    });
+    
+    setInterval(function() {
+      if (isHolding) {
+        cuenta += sliderValue * 2;
+        cuenta = cuenta <= 0 ? 0 : cuenta;
+        cuentaElement.textContent = cuenta;
       }
-    }
-
-    function updateNumberOnHold() {
-      const sensitivity = 5; // Ajusta la sensibilidad del slider
-      const increment = Math.round((Math.abs(dragStartX - (isDragging ? (e.clientX || e.touches[0].clientX) : dragStartX))) / sensitivity);
-      const sign = Math.sign(dragStartX - (isDragging ? (e.clientX || e.touches[0].clientX) : dragStartX));
-
-      if (increment > 0) {
-        updateNumber(increment * sign); // Incrementa o decrementa el número según la dirección
+    }, 500);
+    
+    window.addEventListener("mouseup", function() {
+      if (!isHolding) {
+        resetSlider();
       }
+    });
+
+    function resetSlider() {
+      slider.value = 0;
+      sliderValue = 0;
     }
   </script>
 </body>
