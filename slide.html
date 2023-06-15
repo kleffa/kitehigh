@@ -3,6 +3,15 @@
 <head>
   <title>Slider y cuenta</title>
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
     #slider {
       width: 300px;
     }
@@ -24,32 +33,35 @@
       sliderValue = parseInt(slider.value);
     });
 
-    slider.addEventListener("touchstart", function(e) {
-      isHolding = true;
-      sliderValue = parseInt(slider.value);
-      e.preventDefault();
-    });
+    slider.addEventListener("mousedown", startDrag);
+    slider.addEventListener("touchstart", startDrag);
 
-    slider.addEventListener("touchend", function(e) {
-      isHolding = false;
-      sliderValue = 0;
-      resetSlider();
-      e.preventDefault();
-    });
+    slider.addEventListener("mouseup", stopDrag);
+    slider.addEventListener("touchend", stopDrag);
 
     setInterval(function() {
       if (isHolding) {
         cuenta += sliderValue * 2;
-        cuenta = cuenta >= 0 ? cuenta : 0;
+        cuenta = cuenta <= 0 ? 0 : cuenta;
         cuentaElement.textContent = cuenta;
       }
     }, 500);
 
-    window.addEventListener("touchend", function() {
+    window.addEventListener("mouseup", function() {
       if (!isHolding) {
         resetSlider();
       }
     });
+
+    function startDrag() {
+      isHolding = true;
+    }
+
+    function stopDrag() {
+      isHolding = false;
+      sliderValue = 0;
+      resetSlider();
+    }
 
     function resetSlider() {
       slider.value = 0;
