@@ -12,37 +12,39 @@
   <h1>Slider y cuenta</h1>
   <p>Cuenta: <span id="cuenta">10</span></p>
   <input type="range" id="slider" min="-10" max="10" value="0">
-  
+
   <script>
     var cuenta = 10;
     var slider = document.getElementById("slider");
     var cuentaElement = document.getElementById("cuenta");
     var sliderValue = 0;
     var isHolding = false;
-    
+
     slider.addEventListener("input", function() {
       sliderValue = parseInt(slider.value);
     });
-    
+
     slider.addEventListener("touchstart", function(e) {
-      e.preventDefault(); // Evita el desplazamiento de la página en dispositivos móviles
       isHolding = true;
+      sliderValue = parseInt(slider.value);
+      e.preventDefault();
     });
-    
-    slider.addEventListener("touchend", function() {
+
+    slider.addEventListener("touchend", function(e) {
       isHolding = false;
       sliderValue = 0;
       resetSlider();
+      e.preventDefault();
     });
-    
+
     setInterval(function() {
       if (isHolding) {
         cuenta += sliderValue * 2;
-        cuenta = cuenta <= 0 ? 0 : cuenta;
+        cuenta = cuenta >= 0 ? cuenta : 0;
         cuentaElement.textContent = cuenta;
       }
     }, 500);
-    
+
     window.addEventListener("touchend", function() {
       if (!isHolding) {
         resetSlider();
