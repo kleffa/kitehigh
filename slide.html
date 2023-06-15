@@ -24,11 +24,12 @@
       sliderValue = parseInt(slider.value);
     });
     
-    slider.addEventListener("mousedown", function() {
+    slider.addEventListener("touchstart", function(e) {
+      e.preventDefault(); // Evita el desplazamiento de la página en dispositivos móviles
       isHolding = true;
     });
     
-    slider.addEventListener("mouseup", function() {
+    slider.addEventListener("touchend", function() {
       isHolding = false;
       sliderValue = 0;
       resetSlider();
@@ -42,7 +43,7 @@
       }
     }, 500);
     
-    window.addEventListener("mouseup", function() {
+    window.addEventListener("touchend", function() {
       if (!isHolding) {
         resetSlider();
       }
