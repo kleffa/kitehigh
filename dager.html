@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generador de Imágenes</title>
+</head>
+<body>
+  <button onclick="generarImagen()">Generar y Descargar</button>
+  <canvas id="canvas" width="3120" height="3120"></canvas>
+
+  <script>
+    function generarImagen() {
+      // Obtener el contexto del canvas
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+
+      // Cargar la imagen principal
+      var imagenPrincipal = new Image();
+      imagenPrincipal.src = "ruta/imagen_principal.jpg";
+      imagenPrincipal.onload = function() {
+        // Dibujar la imagen principal en el canvas
+        ctx.drawImage(imagenPrincipal, 0, 0);
+
+        // Cargar la imagen PNG para alinear a la base del canvas
+        var imagenPNG = new Image();
+        imagenPNG.src = "ruta/imagen_alineada.png";
+        imagenPNG.onload = function() {
+          // Calcular la posición para alinear la imagen PNG en la base del canvas
+          var x = (canvas.width - imagenPNG.width) / 2;
+          var y = canvas.height - imagenPNG.height;
+
+          // Dibujar la imagen PNG en el canvas
+          ctx.drawImage(imagenPNG, x, y);
+
+          // Descargar la imagen generada
+          descargarImagen(canvas.toDataURL());
+        };
+      };
+    }
+
+    function descargarImagen(dataURL) {
+      // Crear un enlace temporal
+      var enlace = document.createElement("a");
+      enlace.href = dataURL;
+      enlace.download = "imagen_generada.png";
+
+      // Hacer clic en el enlace para descargar la imagen
+      enlace.click();
+    }
+  </script>
+</body>
+</html>
