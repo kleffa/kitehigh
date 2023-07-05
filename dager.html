@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-
   <title>Generador de Imágenes</title>
-
-      <style>
+    <style>
     #canvas {
       display: none; /* Oculta el canvas */
     }
   </style>
-
   
 </head>
 <body>
@@ -22,16 +19,21 @@
       var canvas = document.getElementById("canvas");
       var ctx = canvas.getContext("2d");
 
-      // Cargar la imagen principal
-      var imagenPrincipal = new Image();
-      imagenPrincipal.src = "IMG_20230704_225149.jpg";
+
+
+
+
+      // AQUI METI MANO
+      var imagenPrincipal = window.AppInventor.getWebViewString();
+      imagenPrincipal.src = img.split(",")[0];
+	  
       imagenPrincipal.onload = function() {
         // Dibujar la imagen principal en el canvas
         ctx.drawImage(imagenPrincipal, 0, 0);
 
-        // Cargar la imagen PNG para alinear a la base del canvas
+        // Cargar el marco
         var imagenPNG = new Image();
-        imagenPNG.src = "marco.png";
+        imagenPNG.src = "marco.png";        //AQUI HAY DRAGONES
         imagenPNG.onload = function() {
           // Calcular la posición para alinear la imagen PNG en la base del canvas
           var x = (canvas.width - imagenPNG.width) / 2;
