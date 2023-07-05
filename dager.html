@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Generador de Imágenes</title>
     <style>
     #canvas {
      /* display: none; /* Oculta el canvas */
@@ -9,7 +8,7 @@
   </style>
   
 </head>
-<body>
+<body onload="generarImagen()">
   <button onclick="generarImagen()">Generar y Descargar</button>
   <canvas id="canvas" width="3120" height="3120"></canvas>
 
@@ -43,7 +42,10 @@
           ctx.drawImage(imagenPNG, x, y);
 
           // Descargar la imagen generada
-          descargarImagen(canvas.toDataURL());
+          //descargarImagen(canvas.toDataURL());
+
+	//pa devolverla al mit inventor	
+	 window.AppInventor.setWebViewString( canvas.toDataURL() )
         };
       };
     }
